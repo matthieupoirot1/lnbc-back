@@ -7,7 +7,7 @@ const ClientSchema = new mongoose.Schema({
   surname:{type:String, required:true},
   email: {type: String, lowercase: true, unique: true, match: [/\S+@\S+\.\S+/, 'is invalid']},
   dateOfBirth: String,
-  tel: String,
+  tel: {type: String, required: true},
   hash: String,
   address: String,
   town: String,
