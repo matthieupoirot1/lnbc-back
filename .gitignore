@@ -2,3 +2,4 @@ node_modules/
 .idea/
 build/
 public/images/**
+!public/images/**/.gitkeep
