@@ -9,7 +9,6 @@ import logMiddleware from "./middlewares/log.middleware";
 import getAuthMiddleware from "./middlewares/auth.middleware";
 
 const cors = require('cors');
-const upload = multer({ dest: 'uploads/' })
 
 class App {
   public app: express.Application;

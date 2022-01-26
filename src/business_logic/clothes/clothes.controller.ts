@@ -1,19 +1,17 @@
 import {Cloth} from './cloth.interface';
 import ClothModel from './cloth.model';
 import BaseController from "../base.controller";
-import {Router} from "express";
 import * as express from "express";
 import ClothNotFoundException from "../../exceptions/clothes/ClothNotFoundException";
 import getAdminMiddleware from "../../middlewares/admin.middleware";
 const path = require('path');
-import getMulterMiddleware from "../../middlewares/multer.middleware";
-import * as http from "http";
 const multer = require("multer");
 const storage = multer.diskStorage({
     destination: function (req: any, file: any, cb: (arg0: null, arg1: string) => void) {
         cb(null, './public/images')
     },
     filename: function (req: any, file: any, cb: any) {
+        console.log("handling files");
         let ext = (path.extname(file.originalname)).toLowerCase(); //get file extension
         let time = Date.now(); //get timestamp
         cb(null, 'cloth-' + time +ext);
