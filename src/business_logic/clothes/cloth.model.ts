@@ -12,7 +12,15 @@ const ClothSchema = new mongoose.Schema({
     disponible:{type: mongoose.Schema.Types.Boolean, required: true, default: true},
     bookmarked:{type: mongoose.Schema.Types.Boolean, required: true, default: false},
     promoPrice:{type: Number, required: true, default: 0},
-    imagesPath:[{type: String}]
+    imagesPath:[{type: String}],
+    sizeStock:{
+        S: {type: Number, default: 0},
+        M: {type: Number, default: 0},
+        L: {type: Number, default: 0},
+        XL: {type: Number, default: 0},
+        XXL: {type: Number, default: 0},
+        TU: {type: Number, default: 0}
+    }
 }, {timestamps: true});
 
 const ClothModel = mongoose.model<Cloth & mongoose.Document>('Clothes', ClothSchema);

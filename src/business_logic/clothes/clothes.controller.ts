@@ -23,6 +23,8 @@ const upload = multer({ storage: storage })
 class ClothesController extends BaseController<Cloth> {
     constructor() {
         super('/clothes', ClothModel, express.Router());
+        this.router.get(`${this.path}/disponible`, this.getAllDisponible);
+        this.router.get(`${this.path}/disponible/bookmarked`, this.getAllBookmarked);
         this.router.get(this.path+'/:id/toggleStatus/:status', getAdminMiddleware(), this.toggleStatus);
         this.router.post(this.path+'/addWithImage', getAdminMiddleware(), upload.array('img[]'), this.createWithImage);
         this.router.patch(this.path+'/updateWithImage/:id', getAdminMiddleware(), upload.array('img[]'), this.updateCloth);
@@ -99,6 +101,18 @@ class ClothesController extends BaseController<Cloth> {
 
         const updatedCloth = await this.model.findByIdAndUpdate(idCloth, cloth, {new: true});
         return response.send(updatedCloth);
+    }
+
+    private getAllDisponible = async (request: express.Request, response: express.Response, next: express.NextFunction) =>{
+        console.log("================> found : ")
+        const clothes = await this.model.find({disponible:true, bookmarked:true}).exec();
+        console.log(clothes);
+        return response.send(clothes);
+    }
+
+    private getAllBookmarked = async (request: express.Request, response: express.Response, next: express.NextFunction) =>{
+        const clothes = await this.model.find({bookmarked: true, disponible:true}).exec();
+        return response.send(clothes);
     }
 }
 

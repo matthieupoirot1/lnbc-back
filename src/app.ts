@@ -36,7 +36,7 @@ class App {
     this.app.use(logMiddleware);
     this.app.use(bodyParser.json());
     this.app.use(cookieParser());
-    this.app.use(getAuthMiddleware(["register", "connexion", "email", "login", "images"]));
+    this.app.use(getAuthMiddleware(["register", "connexion", "email", "login", "images", 'nouveaute', 'catalogue', 'disponible']));
   }
 
   private initializeErrorHandling() {
