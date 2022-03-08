@@ -23,7 +23,7 @@ const upload = multer({ storage: storage })
 class ClothesController extends BaseController<Cloth> {
     constructor() {
         super('/clothes', ClothModel, express.Router());
-        this.router.get(`${this.path}/disponible`, this.getAllDisponible);
+        this.router.get(this.path + "/disponible/any", this.getAllDisponible);
         this.router.get(`${this.path}/disponible/bookmarked`, this.getAllBookmarked);
         this.router.get(this.path+'/:id/toggleStatus/:status', getAdminMiddleware(), this.toggleStatus);
         this.router.post(this.path+'/addWithImage', getAdminMiddleware(), upload.array('img[]'), this.createWithImage);
@@ -33,6 +33,7 @@ class ClothesController extends BaseController<Cloth> {
     }
 
     private toggleStatus = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        console.log("Toggling status !");
         const id = request.params.id;
         const status = request.params.status
         const doc = await this.model.findById(id);
@@ -73,7 +74,7 @@ class ClothesController extends BaseController<Cloth> {
     };
 
     protected deleteClothImage = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
-        console.log("Updating cloth !");
+        console.log("delete cloth image !");
         const idCloth = request.params.clothId;
         const imagePathToDelete = request.params.imagePath;
         const cloth = await this.model.findById(idCloth);
@@ -91,6 +92,7 @@ class ClothesController extends BaseController<Cloth> {
     }
 
     private addImageToCloth = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        console.log("addImageToCloth");
         const idCloth = request.params.clothId;
         const cloth = await this.model.findById(idCloth);
         if (!cloth) return next(new ClothNotFoundException());
@@ -104,13 +106,13 @@ class ClothesController extends BaseController<Cloth> {
     }
 
     private getAllDisponible = async (request: express.Request, response: express.Response, next: express.NextFunction) =>{
-        console.log("================> found : ")
-        const clothes = await this.model.find({disponible:true, bookmarked:true}).exec();
-        console.log(clothes);
+        console.log("getAllDisponible");
+        const clothes = await this.model.find({disponible:true}).exec();
         return response.send(clothes);
     }
 
     private getAllBookmarked = async (request: express.Request, response: express.Response, next: express.NextFunction) =>{
+        console.log("getAllBookmarked");
         const clothes = await this.model.find({bookmarked: true, disponible:true}).exec();
         return response.send(clothes);
     }

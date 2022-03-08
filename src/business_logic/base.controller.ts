@@ -27,6 +27,7 @@ class BaseController<T> implements Controller {
     }
 
     private getAll = (request: express.Request, response: express.Response) => {
+        console.log("getAllBase");
         this.model.find()
             .then((results: T[]) => {
                 response.json(results);
@@ -34,6 +35,7 @@ class BaseController<T> implements Controller {
     }
 
     private getById = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        console.log("getByIdBase");
         const id = request.params.id;
         const doc = await this.model.findById(id);
         if (!doc) return next(new ClothNotFoundException());
@@ -56,6 +58,7 @@ class BaseController<T> implements Controller {
     }
 
     private deleteById = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+        console.log("deleteByIdBase")
         const id = request.params.id;
         console.log(`Trying to delete ${this.model.modelName} of id ${id}`);
         const success = await this.model.findByIdAndDelete(id);
