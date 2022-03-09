@@ -1,18 +1,19 @@
 import * as mongoose from "mongoose";
 const uniqueValidator = require('mongoose-unique-validator');
-import {Cloth, ColorEnum, ClothEnum} from './cloth.interface';
+import {Cloth} from './cloth.interface';
 import {Schema} from "mongoose";
 
 const ClothSchema = new mongoose.Schema({
     name:{type:String, required:true},
-    type:{type:String, required:true, enum : ClothEnum,},
+    type:{type:String, required:true},
     qte: {type: String, required: true, default: 0},
     price: {type: Number, required: true, default: 0},
-    color:{type: [String], required:true, enum: ColorEnum},
+    color:{type: [String], required:true},
     disponible:{type: mongoose.Schema.Types.Boolean, required: true, default: true},
     bookmarked:{type: mongoose.Schema.Types.Boolean, required: true, default: false},
     promoPrice:{type: Number, required: true, default: 0},
     imagesPath:[{type: String}],
+    description:{type: String},
     sizeStock:{
         S: {type: Number, default: 0},
         M: {type: Number, default: 0},

@@ -67,6 +67,7 @@ class ClothesController extends BaseController<Cloth> {
         console.log("Updating cloth !");
         let data = request.body;
         data.color = data.color.split(',');
+        data.imagesPath = data.imagesPath.split(',');
         const id = request.params.id;
         const cloth = await this.model.findByIdAndUpdate(id, data, {new: true});
         if(!cloth) return next(new ClothNotFoundException());
@@ -107,7 +108,18 @@ class ClothesController extends BaseController<Cloth> {
 
     private getAllDisponible = async (request: express.Request, response: express.Response, next: express.NextFunction) =>{
         console.log("getAllDisponible");
-        const clothes = await this.model.find({disponible:true}).exec();
+        let clothes = await this.model.find({disponible:true}).exec();
+        //todo send only stock or even out of stock
+        clothes = clothes.filter((cloth) => {
+            let valid = false;
+            for (let sizeKey in cloth.sizeStock) {
+                if(cloth.sizeStock[sizeKey]>0){
+                    valid = true;
+                    console.log(cloth.name+" found > 0 size : "+ sizeKey + +cloth.sizeStock[sizeKey]);
+                }
+            }
+            return valid
+        })
         return response.send(clothes);
     }
 
